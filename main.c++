@@ -18,7 +18,7 @@ typedef struct lista{
 }lista;
 
 int hashCode(string str, int M);
-void insercaoHash(lista *v[], string dado, int m);
+void insercaoHash(lista **v[], string dado, int m);
 int colisoes(lista *v[]);
 int lerArquivo(lista *v[], int m);
 void inicializaVetor(lista *v[], int m);
@@ -29,7 +29,7 @@ int main() {
     inicializaVetor(v, 31);
     inicializaVetor(v2, 79);
     inicializaVetor(v3, 151);
-    lerArquivo(v, 2);
+    lerArquivo(v, 31);
     colisoes(v);
 }
 
@@ -52,21 +52,22 @@ int hashCode(string str, int M){
 }
 
 
-void insercaoHash(lista *v[], string dado, int m){
+void insercaoHash(lista **v[], string dado, int m){
     int linha;
-    lista *novo;
+    lista *novo, **aux;
     linha = hashCode(dado, m);
-    if (v[linha] == nullptr) {
+    if ((*v)[linha] == nullptr) {
         novo = (lista *) malloc(sizeof(lista));
         novo->proximo = nullptr;
-        v[linha] = novo;
+        (*v)[linha] = novo;
     } else {
-        while ((v[linha])->proximo != nullptr) {
-            (v[linha]) = (v[linha])->proximo;
+        aux=&(*v)[linha];
+        while((*aux)->proximo!=nullptr){
+            aux=&(*aux)->proximo;
         }
         novo = (lista *) malloc(sizeof(lista));
         novo->proximo = nullptr;
-        (v[linha])->proximo = novo;
+        (*aux)->proximo = novo;
     }
 }
 
@@ -96,7 +97,7 @@ int lerArquivo(lista *v[], int m){
     }
 
     while (getline(input_file, line)){
-        insercaoHash(v,line, m);
+        insercaoHash(&v,line, m);
     }
 
     for (const auto &i : lines)
