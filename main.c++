@@ -13,17 +13,16 @@ using std::ifstream; using std::vector;
 using namespace std;
 
 typedef struct lista{
-    char *dado;
+    string dado;
     struct lista *proximo;
 }lista;
 
 int hashCode(string str, int M);
 void insercaoHash(lista *v[], string dado, int m);
 int colisoes(lista *v[]);
-lista *busca(lista *v[], string palavra, int m);
 int lerArquivo(lista *v[], int m);
 void inicializaVetor(lista *v[], int m);
-void mostrar(lista *v[]);
+vector<string> lerArquivo2(string db);
 
 int main() {
     lista *v[31], *v2[79], *v3[151];
@@ -55,19 +54,19 @@ int hashCode(string str, int M){
 
 void insercaoHash(lista *v[], string dado, int m){
     int linha;
-    lista *novo=nullptr;
+    lista *novo;
     linha = hashCode(dado, m);
     if (v[linha] == nullptr) {
         novo = (lista *) malloc(sizeof(lista));
         novo->proximo = nullptr;
         v[linha] = novo;
     } else {
-        while (v[linha]->proximo != nullptr) {
-            v[linha] = v[linha]->proximo;
+        while ((v[linha])->proximo != nullptr) {
+            (v[linha]) = (v[linha])->proximo;
         }
         novo = (lista *) malloc(sizeof(lista));
         novo->proximo = nullptr;
-        v[linha]->proximo = novo;
+        (v[linha])->proximo = novo;
     }
 }
 
@@ -85,26 +84,8 @@ int colisoes(lista *v[]){
     return colisoes;
 }
 
-lista *busca(lista *v[], string palavra, int m){
-    int linha;
-    linha=hashCode(palavra, m);
-    if((v[linha]->dado==palavra)&&(v[linha]!=nullptr)){
-        return v[linha];
-    }
-    else if (v[linha]==nullptr) return nullptr;
-    else{
-        while((v[linha]->dado!=palavra)&&(v[linha]->proximo!=nullptr)){
-            v[linha]=v[linha]->proximo;
-        }
-        if(v[linha]->dado==palavra)
-            return v[linha];
-        else return nullptr;
-    }
-}
-
-
 int lerArquivo(lista *v[], int m){
-    string filename("100 palavras.txt");
+    string filename("1000 palavras.txt");
     vector<string> lines;
     string line;
     ifstream input_file(filename);
@@ -115,7 +96,6 @@ int lerArquivo(lista *v[], int m){
     }
 
     while (getline(input_file, line)){
-       // lines.push_back(line);
         insercaoHash(v,line, m);
     }
 
