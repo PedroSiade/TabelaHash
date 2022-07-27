@@ -1,29 +1,14 @@
-#include <iostream>
-#include <string>
-#include <string.h>
-#include <fstream>
-#include <vector>
-#include <sstream>
-#include <map>
-#include <algorithm>
-#include <iterator>
-#include <time.h>
 #include <bits/stdc++.h>
-#include <chrono>
-#include <thread>
 
-
-using std::cout; using std::cerr;
-using std::endl; using std::string;
-using std::ifstream; using std::vector;
 using namespace std;
 
 typedef struct lista{
     string dado;
     struct lista *proximo;
 }lista;
+
 void inicializaVetor(lista *v[], int m);
-int hashCode(string str, int M);
+int hashCode(string palavra, int m);
 int lerArquivo(lista *v[], int m);
 void insercaoHash(lista **v[], string dado, int m);
 void colisoes(lista *v[], int m);
@@ -37,6 +22,10 @@ int main() {
     inicializaVetor(v3, 151);
     lerArquivo(v, 31);
     colisoes(v,31);
+    lerArquivo(v2, 79);
+    colisoes(v2,79);
+    lerArquivo(v3, 151);
+    colisoes(v3,151);
     end = clock();
     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
     cout << "\nTime taken by program is : " << fixed
@@ -51,15 +40,14 @@ void inicializaVetor(lista *v[], int m){
     }
 }
 
-int hashCode(string str, int M){
-    int tamanhoStr;
-    tamanhoStr= str.length();
-    int ascii = 0, codigo;
-    int i;
-    for(i = 0; i < tamanhoStr; i++){
-        ascii += str[i];
+int hashCode(string palavra, int m){
+    int tamanhoPalavra;
+    tamanhoPalavra= palavra.length();
+    int ascii = 0, codigo,i;
+    for(i = 0; i < tamanhoPalavra; i++){
+        ascii += palavra[i];
     }
-    codigo = ascii % M;
+    codigo = ascii % m;
     return codigo;
 }
 
@@ -95,12 +83,13 @@ void colisoes(lista *v[], int m) {
         }
     }
     printf("colisoes total: %d", colisoestotal);
-
 }
 
 
 int lerArquivo(lista *v[], int m){
     string filename("100 palavras.txt");
+    //string filename("1000 palavras.txt");
+    //string filename("10 mil palavras.txt");
     vector<string> lines;
     string line;
     ifstream input_file(filename);
