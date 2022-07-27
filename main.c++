@@ -1,12 +1,18 @@
 #include <iostream>
-#include <cstring>
 #include <string>
+#include <string.h>
 #include <fstream>
 #include <vector>
 #include <sstream>
 #include <map>
 #include <algorithm>
 #include <iterator>
+#include <time.h>
+#include <bits/stdc++.h>
+#include <chrono>
+#include <thread>
+
+
 using std::cout; using std::cerr;
 using std::endl; using std::string;
 using std::ifstream; using std::vector;
@@ -16,21 +22,27 @@ typedef struct lista{
     string dado;
     struct lista *proximo;
 }lista;
-
-int hashCode(string str, int M);
-void insercaoHash(lista **v[], string dado, int m);
-int colisoes(lista *v[]);
-int lerArquivo(lista *v[], int m);
 void inicializaVetor(lista *v[], int m);
-vector<string> lerArquivo2(string db);
+int hashCode(string str, int M);
+int lerArquivo(lista *v[], int m);
+void insercaoHash(lista **v[], string dado, int m);
+void colisoes(lista *v[], int m);
 
 int main() {
+    clock_t start, end;
+    start = clock();
     lista *v[31], *v2[79], *v3[151];
     inicializaVetor(v, 31);
     inicializaVetor(v2, 79);
     inicializaVetor(v3, 151);
     lerArquivo(v, 31);
-    colisoes(v);
+    colisoes(v,31);
+    end = clock();
+    double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+    cout << "\nTime taken by program is : " << fixed
+         << time_taken << setprecision(5);
+    cout << " sec " << endl;
+    return 0;
 }
 
 void inicializaVetor(lista *v[], int m){
@@ -71,22 +83,24 @@ void insercaoHash(lista **v[], string dado, int m){
     }
 }
 
-int colisoes(lista *v[]){
-    int linha=0, colisoes=0;
-    while(v[linha]!=nullptr){
-        while(v[linha]->proximo!=nullptr){
-            v[linha]=v[linha]->proximo;
-            colisoes++;
-            printf("linha %d: colisao: %d\n", linha, colisoes);
+void colisoes(lista *v[], int m) {
+    int linha = 0, i, colisoestotal=0;
+    for (i = 0; i < m; i++) {
+        while (v[linha] != nullptr) {
+            while (v[linha]->proximo != nullptr) {
+                v[linha] = v[linha]->proximo;
+                colisoestotal++;
+            }
+            linha++;
         }
-        linha++;
     }
-    printf("Numero de colisoes total %d\n", colisoes);
-    return colisoes;
+    printf("colisoes total: %d", colisoestotal);
+
 }
 
+
 int lerArquivo(lista *v[], int m){
-    string filename("1000 palavras.txt");
+    string filename("100 palavras.txt");
     vector<string> lines;
     string line;
     ifstream input_file(filename);
