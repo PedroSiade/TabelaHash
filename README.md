@@ -2,6 +2,8 @@
 
 Programa realizado em c++
 
+Foi utilizado 3 banco de dados diferentes a fim de ver o funcionamento da Hash, bem com analisar a complexidade e comparar com outros métodos.
+
 Explicação sobre o algoritmo:
 
 Uma tabela hash, também conhecida como hash table, é uma estrutura de dados utilizada para armazenar e recuperar informações de forma eficiente. Ela é amplamente utilizada em ciência da computação e programação devido à sua capacidade de proporcionar acesso rápido a dados, em média, em tempo constante (O(1)), quando implementada corretamente.
